@@ -1,7 +1,6 @@
 import { galleryItems } from "./gallery-items.js";
 
 const galleryRef = document.querySelector(".gallery");
-const imageRef = document.querySelector(".gallery__image");
 
 const imagesMarkup = createImagesMarkup(galleryItems);
 
@@ -29,6 +28,10 @@ galleryRef.addEventListener("click", onModalOpenClick);
 function onModalOpenClick(event) {
   event.preventDefault();
 
+  if (event.target.nodeName !== "IMG") {
+    return;
+  }
+
   const originalImage = event.target.dataset.source;
   const descriptionImage = event.target.alt;
 
@@ -43,10 +46,7 @@ function onModalOpenClick(event) {
   function onModalCloseClick(event) {
     if (event.code === "Escape") {
       showOriginal.close();
+      galleryRef.removeEventListener("keydown", onModalCloseClick);
     }
-  }
-
-  if (event.target !== imageRef) {
-    return;
   }
 }
